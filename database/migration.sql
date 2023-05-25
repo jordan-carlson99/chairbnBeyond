@@ -12,7 +12,7 @@ CREATE TABLE users (
     id serial PRIMARY KEY,
     fname text NOT NULL,
     lname text NOT NULL,
-    email text NOT NULL UNIQUE,
+    email text NOT NULL ,
     password TEXT NOT NULL
 );
 
