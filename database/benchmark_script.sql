@@ -42,4 +42,3 @@ SELECT reviews.rating, reviews.review, users.fname, users.photo_url, bookings.en
 -- titlebar --
 -- SELECT l.id, l.title, l.price, loc.city, ROUND(AVG(r.rating), 2) AS average_rating, SUM(1) AS review_count, json_object_agg(r.id::text, r.review) AS reviews FROM listings l LEFT JOIN reviews r ON l.id = :review_test JOIN locations loc ON :location_test = loc.id WHERE l.id = :listing_test GROUP BY l.id, l.title, loc.city ORDER BY l.id;
 
-COPY users(fname,lname,email,password, photo_url) FROM '/tmp/test_users.csv' DELIMITER ',' CSV HEADER;

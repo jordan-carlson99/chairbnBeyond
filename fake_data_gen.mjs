@@ -1,12 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { writeFile } from "fs";
-import dotenv from "dotenv";
-import pg from "pg";
 
-dotenv.config();
-const { Client } = pg;
-const db = new Client(process.env.DATABASE);
-db.connect();
 // INSERT INTO users(fname, lname, email, password, photo_url) VALUES ('Archibald', 'McTickleberry', 'bartholomew.mctickleberry@gmail.com', 'password', 'https://a0.muscache.com/im/pictures/user/cd1c0777-f3b3-40a3-8dab-c96a5cd2efef.jpg?im_w=240');
 function popUsers(n) {
   let str = "fname, lname, email, password, photo_url \n";
@@ -76,7 +70,7 @@ function popListings(n) {
   for (let i = 0; i <= n; i++) {
     const title = faker.lorem.sentence();
     const description = faker.lorem.paragraph();
-    const price = faker.number.float({ min: 10, max: 100, precision: 0.01 });
+    const price = faker.number.int({ min: 10, max: 100, precision: 0.01 });
     const locationid = faker.number.int({ min: 1, max: 4 });
     const hostId = faker.number.int({ min: 1, max: 4 });
 
@@ -104,7 +98,7 @@ function popListing_amenities(n) {
 function popBookings(n) {
   let str = "listingId, userId, startDate, endDate, numGuests\n";
   for (let i = 0; i <= n; i++) {
-    const listingId = faker.number.int({ min: 1, max: 100 });
+    const listingId = faker.number.int({ min: 1, max: 15 });
     const userId = faker.number.int({ min: 1, max: 10 });
     const startDate = faker.date.past().toISOString().split("T")[0];
     const endDate = faker.date.future().toISOString().split("T")[0];
@@ -132,7 +126,7 @@ function popReviews(n) {
     const accuracy = faker.number.int({ min: 1, max: 5 });
     const location = faker.number.int({ min: 1, max: 5 });
     const value = faker.number.int({ min: 1, max: 5 });
-    const bookingId = faker.number.int({ min: 1, max: 100 });
+    const bookingId = faker.number.int({ min: 1, max: 23 });
 
     str += `${listingId}, ${userId}, '${review}', ${rating}, ${cleanliness}, ${communication}, ${checkin}, ${accuracy}, ${location}, ${value}, ${bookingId}\n`;
   }
@@ -156,70 +150,74 @@ function popListingPhotos(n) {
 // console.log(popListingPhotos(10));
 
 function csvinator(n) {
-  writeFile("test_users.csv", popUsers(n), (err) => {
+  writeFile("csv/test_users.csv", popUsers(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_locs.csv", popLocations(n), (err) => {
+  writeFile("csv/test_locs.csv", popLocations(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_amenity_types.csv", popAmenityTypes(n), (err) => {
+  writeFile("csv/test_amenity_types.csv", popAmenityTypes(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_amenities.csv", popAmenities(n), (err) => {
+  writeFile("csv/test_amenities.csv", popAmenities(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_hosts.csv", popHosts(n), (err) => {
+  writeFile("csv/test_hosts.csv", popHosts(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_listings.csv", popListings(n), (err) => {
+  writeFile("csv/test_listings.csv", popListings(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_listing_amenisites.csv", popListing_amenities(n), (err) => {
+  writeFile(
+    "csv/test_listing_amenities.csv",
+    popListing_amenities(n),
+    (err) => {
+      if (err) {
+        console.log("not cool");
+      } else {
+        console.log("cool");
+      }
+    }
+  );
+  writeFile("csv/test_bookings.csv", popBookings(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_bookings.csv", popBookings(n), (err) => {
+  writeFile("csv/test_reviews.csv", popReviews(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
       console.log("cool");
     }
   });
-  writeFile("test_reviews.csv", popReviews(n), (err) => {
-    if (err) {
-      console.log("not cool");
-    } else {
-      console.log("cool");
-    }
-  });
-  writeFile("test_listing_photos.csv", popListingPhotos(n), (err) => {
+  writeFile("csv/test_listing_photos.csv", popListingPhotos(n), (err) => {
     if (err) {
       console.log("not cool");
     } else {
@@ -228,4 +226,4 @@ function csvinator(n) {
   });
 }
 
-csvinator(10);
+csvinator(1000);
